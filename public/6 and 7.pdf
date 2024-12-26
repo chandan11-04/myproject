@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        .calculator {
+            max-width: 300px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        input[type="number"] {
+            width: calc(100% - 20px);
+            padding: 8px;
+            margin: 8px 0;
+        }
+        button {
+            margin: 5px;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            background-color: #007BFF;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 1.2em;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <h1>Simple Calculator</h1>
+        <input type="number" id="num1" placeholder="Enter first number">
+        <input type="number" id="num2" placeholder="Enter second number">
+        <div>
+            <button onclick="calculate('sum')">Sum</button>
+            <button onclick="calculate('difference')">Difference</button>
+            <button onclick="calculate('product')">Product</button>
+            <button onclick="calculate('quotient')">Quotient</button>
+            <button onclick="calculate('remainder')">Remainder</button>
+            <button onclick="calculate('power')">Power</button>
+            <button onclick="calculate('square')">Square</button>
+            <button onclick="calculate('squareRoot')">Square Root</button>
+        </div>
+        <div class="result" id="result">Result: </div>
+    </div>
+
+    <script>
+        function calculate(operation) {
+            const num1 = parseFloat(document.getElementById('num1').value);
+            const num2 = parseFloat(document.getElementById('num2').value);
+            let result;
+
+            switch (operation) {
+                case 'sum':
+                    result = num1 + num2;
+                    break;
+                case 'difference':
+                    result = num1 - num2;
+                    break;
+                case 'product':
+                    result = num1 * num2;
+                    break;
+                case 'quotient':
+                    result = num2 !== 0 ? num1 / num2 : 'Error: Division by zero';
+                    break;
+                case 'remainder':
+                    result = num2 !== 0 ? num1 % num2 : 'Error: Division by zero';
+                    break;
+                case 'power':
+                    result = Math.pow(num1, num2);
+                    break;
+                case 'square':
+                    result = `Square of ${num1} is ${num1 ** 2}, Square of ${num2} is ${num2 ** 2}`;
+                    break;
+                case 'squareRoot':
+                    result = `Square root of ${num1} is ${Math.sqrt(num1)}, Square root of ${num2} is ${Math.sqrt(num2)}`;
+                    break;
+                default:
+                    result = 'Invalid operation';
+            }
+
+            document.getElementById('result').innerText = result;
+        }
+    </script>
+</body>
+</html>
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON Operations</title>
+    <style>
+        body { font-family: Arial, sans-serif; padding: 20px; }
+        .btn { padding: 10px 15px; background-color: #007bff; color: white; border: none; cursor: pointer; }
+        .btn:hover { background-color: #0056b3; }
+    </style>
+</head>
+<body>
+
+    <h1>JSON Operations</h1>
+
+    <!-- Convert JSON Text to JavaScript Object -->
+    <div>
+        <button class="btn" id="jsonToObject">Convert JSON</button>
+        <div id="output"></div>
+    </div>
+
+    <!-- Convert JSON Date to JavaScript Date -->
+    <div>
+        <button class="btn" id="jsonToDate">Convert JSON Date</button>
+        <div id="dateOutput"></div>
+    </div>
+
+    <!-- Convert JSON to CSV and CSV to JSON -->
+    <div>
+        <button class="btn" id="jsonToCSV">JSON to CSV</button>
+        <button class="btn" id="csvToJSON">CSV to JSON</button>
+        <div id="csvOutput"></div>
+    </div>
+
+    <!-- Node.js Hash Example -->
+    <div>
+        <button class="btn" id="createHashBtn">Generate Hash</button>
+        <div id="hashOutput">Works in Node.js only</div>
+    </div> 
+
+    <script>
+        // a) Convert JSON to JavaScript Object
+        document.getElementById('jsonToObject').onclick = function() {
+            const jsonString = '{"name": "Alice", "age": 25}';
+            const jsonObject = JSON.parse(jsonString);
+            document.getElementById('output').innerText = `Name: ${jsonObject.name}, Age: ${jsonObject.age}`;
+        };
+
+        // b) Convert JSON date string to Date object
+        document.getElementById('jsonToDate').onclick = function() {
+            const jsonDate = '{"date": "2023-09-20T15:30:00"}';
+            const jsonObj = JSON.parse(jsonDate);
+            const dateObj = new Date(jsonObj.date);
+            document.getElementById('dateOutput').innerText = `Date: ${dateObj}`;
+        };
+
+        // c) Convert JSON to CSV
+        document.getElementById('jsonToCSV').onclick = function() {
+            const jsonArray = [{ name: "Alice", age: 25 }, { name: "Bob", age: 30 }];
+            const csv = jsonArray.map(obj => Object.values(obj).join(',')).join('\n');
+            document.getElementById('csvOutput').innerText = csv;
+        };
+
+        // c) Convert CSV to JSON
+        document.getElementById('csvToJSON').onclick = function() {
+            const csvString = "name,age\nAlice,25\nBob,30";
+            const json = csvString.split('\n').slice(1).map(line => {
+                const [name, age] = line.split(',');
+                return { name, age };
+            });
+            document.getElementById('csvOutput').innerHTML = '<pre>' + JSON.stringify(json, null, 2) + '</pre>';
+
+        };  
+
+        // d) Create Hash (Node.js)
+        document.getElementById('createHashBtn').onclick = function() {
+            alert("This feature works in Node.js only.");
+        };
+    </script>
+
+</body>
+</html>
